@@ -20,15 +20,23 @@ public class EiffelOrch {
     private final ConcurrentLinkedQueue<com.eiffeltrigger.EventTriggeredJob> jobEventMatches = new ConcurrentLinkedQueue<>();
     private static final Logger LOGGER = Logger.getLogger(EiffelOrch.class.getName());
     private static final ConnectionFactory factory = new ConnectionFactory();
+    private static final String USERNAME = System.getenv("USERNAME");
+    private static final String PASSWORD = System.getenv("PASSWORD");
+    private static final String HOST = System.getenv("HOST");
+    private static final String PORT = System.getenv("PORT");
     private static final String EXCHANGE = System.getenv("EXCHANGE");
     private static final String ROUTINGKEY = System.getenv("ROUTINGKEY");
 
     public EiffelOrch() throws Exception {
-        factory.setUsername(System.getenv("USERNAME"));
-        factory.setPassword(System.getenv("PASSWORD"));
-        factory.setHost(System.getenv("HOST"));
-        String portStr = System.getenv("PORT");
+        factory.setUsername(USERNAME);
+        factory.setPassword(PASSWORD);
+        factory.setHost(HOST);
+        String portStr = PORT;
         factory.setPort(Integer.parseInt(portStr));
+        LOGGER.info("USERNAME: " + USERNAME);
+        LOGGER.info("PASSWORD: " + PASSWORD);
+        LOGGER.info("HOST: " + HOST);
+        LOGGER.info("PORT: " + PORT);
 
         startRabbitMQConsumer();
         startSocketListener();
