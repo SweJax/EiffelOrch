@@ -33,8 +33,8 @@ public class EiffelOrch {
 
 
     public EiffelOrch() throws Exception {
-        factory.setUsername(USERNAME);
-        factory.setPassword(PASSWORD);
+        factory.setUsername(USERNAME.toLowerCase());
+        factory.setPassword(PASSWORD.toLowerCase());
         factory.setHost(HOST);
         String portStr = PORT;
         factory.setPort(Integer.parseInt(portStr));
