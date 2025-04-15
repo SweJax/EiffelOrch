@@ -26,6 +26,11 @@ public class EiffelOrch {
     private static final String PORT = System.getenv("PORT");
     private static final String EXCHANGE = System.getenv("EXCHANGE");
     private static final String ROUTINGKEY = System.getenv("ROUTINGKEY");
+    private static final String JENKINSIP = System.getenv("JENKINSIP");
+    private static final String JOBTRIGGERURL = System.getenv("JOBTRIGGERURL");
+    private static final String MATCHSTRING = System.getenv("MATCHSTRING");
+    private static final String APITOKEN = System.getenv("APITOKEN");
+
 
     public EiffelOrch() throws Exception {
         factory.setUsername(USERNAME);
@@ -86,13 +91,14 @@ public class EiffelOrch {
                 DeliverCallback deliverCallback = (consumerTag, delivery) -> {
                     String message = new String(delivery.getBody(), "UTF-8");
                     LOGGER.info("NEW MESSAGE RMQ: " + message);
+                    JenkinsTrigger.send(JENKINSIP, JOBTRIGGERURL, APITOKEN);
                 };
 
                 LOGGER.info("STARTING RMQ");
 
                 channel.basicConsume(queueName, true, deliverCallback, consumerTag -> {});
             } catch (IOException | TimeoutException e) {
-                LOGGER.log(Level.SEVERE, "RabbitMQ error", e);
+                LOGGER.log(Level.SEVERE, "RabbitMQ error" + " USERNAME: " + USERNAME + " PASSWORD: " + PASSWORD + " HOST: " + HOST + " PORT: " + PORT, e);
             }
         }).start();
     }
