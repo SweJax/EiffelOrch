@@ -98,7 +98,10 @@ public class EiffelOrch {
 
                 channel.basicConsume(queueName, true, deliverCallback, consumerTag -> {});
             } catch (IOException | TimeoutException e) {
-                LOGGER.log(Level.SEVERE, "RabbitMQ error" + " USERNAME: " + USERNAME + " PASSWORD: " + PASSWORD + " HOST: " + HOST + " PORT: " + PORT, e);
+                LOGGER.log(Level.SEVERE, 
+    String.format("RabbitMQ errors - USERNAME: %s PASSWORD: %s HOST: %s PORT: %d", 
+        USERNAME, PASSWORD, HOST, PORT), 
+    e);
             }
         }).start();
     }
